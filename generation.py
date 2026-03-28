@@ -2,7 +2,7 @@ from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 import torch
 
 cache_path = "/home/personal/models"
-model = "Qwen/Qwen3.5-0.8B-Base"
+model_name = "Qwen/Qwen3.5-0.8B-Base"
 
 def run_model():
     """
@@ -11,7 +11,7 @@ def run_model():
     try:
 
         model = AutoModelForCausalLM.from_pretrained(
-            model,
+            model_name,
             cache_dir=cache_path
         )
 
@@ -36,7 +36,7 @@ def run_model():
         
         print(f"Prompt: {prompt}")
         print(f"Generated: {results[0]['generated_text']}")
-        
+
     except Exception as e:
         print(f"Error in pipeline generation: {e}")
 
