@@ -1,3 +1,5 @@
+from huggingface_hub import login
+
 from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM
 import torch
 
@@ -10,21 +12,12 @@ def run_model():
     """
     try:
 
-        model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            cache_dir=cache_path
-        )
-
-        tokenizer = AutoTokenizer.from_pretrained(
-            model,
-            cache_dir=cache_path
-        )
         generator = pipeline(
             "text-generation",
-            model=model,  # You can replace with any cached model
-            tokenizer=tokenizer
+            model=model_name,  # You can replace with any cached model
+            token=True
         )
-        
+
         # Generate text
         prompt = "The future of artificial intelligence is"
         results = generator(
@@ -33,7 +26,7 @@ def run_model():
             num_return_sequences=1,
             temperature=0.7
         )
-        
+
         print(f"Prompt: {prompt}")
         print(f"Generated: {results[0]['generated_text']}")
 
@@ -41,7 +34,9 @@ def run_model():
         print(f"Error in pipeline generation: {e}")
 
 if __name__ == "__main__":
+    login("your_token_here")
+
     # Run the generation examples
     run_model()
-    
+
     print("\n=== Generation Complete ===")
